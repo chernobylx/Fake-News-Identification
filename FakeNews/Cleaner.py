@@ -5,25 +5,35 @@ class Cleaner(TransformerMixin):
         pass
 
     def fit(self, X, y=None):
-        self.X = X
+        self.X = X.copy()
+        self.to_drop = {}
+        self.to_drop['dup_text'] = self.X[self.X.duplicated(subset = 'text')].index
+        self.X.drop(self.to_drop['dup_text'], inplace = True)
+
+        self.to_drop['dup_title'] = self.X[self.X.duplicated(subset = 'title')].index
+        self.X.drop(self.to_drop['dup_title'], inplace = True)
+
+        self.to_drop['date_http'] = self.X[self.X.date.str.contains('http')].index
+        self.X.drop(self.to_drop['date_http'], inplace = True)
+
+        self.to_drop['date_MSN'] = self.X[self.X.date.str.contains('MSN')].index
+        self.X.drop(self.to_drop['date_MSN'], inplace = True)
+
+
+        self.X['word_count_title'] = self.X.title.str.split().apply(len)
+        self.X['word_count_text'] = self.X.text.str.split().apply(len)
+
+        self.to_drop['stubs'] = self.X[self.X.word_count_text < self.X.word_count_title].index
+        self.X.drop(self.to_drop['stubs'], inplace = True)
         return self
 
-    def transform(self, df, y=None):
-        df = df.drop(df[df.duplicated(subset = 'text')].index)
-        df = df.drop(df[df.duplicated(subset = 'title')].index)
+    def transform(self, X, y=None):
+        #print(self.to_drop)
+        df = X.copy()
+        for index in self.to_drop.values():
+           df.drop(index, inplace = True)
 
-        df = df.drop(df[df.date.str.contains('http')].index)
-        df = df.drop(df[df.date.str.contains('MSN')].index)
-
-        df.date = pd.to_datetime(df.date, format = 'mixed')
-
-        df['word_count_text'] = df.text.str.split().apply(len)
-        df['word_count_title'] = df.title.str.split().apply(len)
-
-
-        df.drop(df[df.word_count_text < df.word_count_title].index, inplace=True)
-
-        return df[['text','title']].to_numpy()
+        return df.to_numpy()
 
     def get_params(self, deep=True):
         return {}
