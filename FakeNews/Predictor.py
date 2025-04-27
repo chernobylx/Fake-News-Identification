@@ -38,6 +38,7 @@ class Predictor(TransformerMixin, BaseEstimator):
         return self
 
     def predict(self, W):
+        print('Predicting...')
         yp = W.argmax(axis = 1)
         yp = [self.label_mapping[y] for y in yp]
         return yp

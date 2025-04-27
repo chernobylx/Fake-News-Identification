@@ -23,6 +23,7 @@ class Filter(TransformerMixin):
         return self
 
     def transform(self, X, y=None):
+        print('Filtering...')
         X = pd.DataFrame(X)
         for col in X.columns:
             X[col] = X[col].apply(self.process_doc)

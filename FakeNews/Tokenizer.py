@@ -11,6 +11,7 @@ class Tokenizer(TransformerMixin):
         return self
 
     def transform(self, X, y=None):
+        print('Tokenizing ...')
         X = pd.DataFrame(X)
         cols = X.columns
         for col in cols:

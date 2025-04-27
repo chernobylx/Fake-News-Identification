@@ -19,6 +19,7 @@ class Lemmatizer(TransformerMixin):
 
 
     def transform(self, X, y=None):
+        print('Lemmatizing...')
         X = pd.DataFrame(X)
         for col in X.columns:
             X[col] = X[col].apply(self.lemmatize_doc)

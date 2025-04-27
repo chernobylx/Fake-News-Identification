@@ -28,6 +28,7 @@ class Cleaner(TransformerMixin):
         return self
 
     def transform(self, X, y=None):
+        print('Cleaning...')
         #print(self.to_drop)
         df = X.copy()
         for index in self.to_drop.values():
