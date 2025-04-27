@@ -1,6 +1,7 @@
 from itertools import permutations
 from sklearn.base import TransformerMixin, BaseEstimator
 from sklearn.metrics import accuracy_score
+import pandas as pd
 class Predictor(TransformerMixin, BaseEstimator):
     def __init__(self):
         pass
@@ -12,11 +13,11 @@ class Predictor(TransformerMixin, BaseEstimator):
         returns: self
         '''
         self.W = W
-        self.yt = y
+        self.yt = pd.Series(y)
 
         #the predicted class is the column with the largest value for each row
         self.preds = self.W.argmax(axis = 1)
-        self.labels = y.unique()
+        self.labels = pd.Series(y).unique()
 
         #generate permutations of class labels
         self.perms = permutations(self.labels)
