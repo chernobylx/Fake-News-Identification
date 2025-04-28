@@ -42,3 +42,7 @@ class Cleaner(TransformerMixin):
     def get_feature_names_out(self, features_in):
         return features_in
 
+
+    #TODO Write summary method
+    def summary(self):
+        print('Data Successfully Cleaned')
