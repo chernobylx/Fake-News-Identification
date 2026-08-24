@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fake-news-identification"
+version = "1.0.0"
+description = "Custom scikit-learn transformers for fake news detection on the ISOT dataset"
+authors = [{ name = "Jonathan Chernoch" }]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "spacy",
+]
+
+[tool.setuptools]
+packages = ["FakeNews"]
