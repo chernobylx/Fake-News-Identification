@@ -1,24 +1,17 @@
+"""Token filtering step for the text-processing pipeline."""
 from sklearn.base import TransformerMixin
 import pandas as pd
+
+
 class Filter(TransformerMixin):
-    def __init__(self):
-        pass
+    """Drops punctuation, stop words, and whitespace tokens from spaCy docs."""
+
     def filter(self, token):
-        if token.is_punct:
-            return False
-        elif token.is_stop:
-            return False
-        elif token.is_space:
-            return False
-        else:
-            return True
-    def get_feauture_names_out(self, features_in):
-        return features_in
-    def get_feature_names(self):
-        return ['a','b','c','d','e','f']
+        return not (token.is_punct or token.is_stop or token.is_space)
 
     def process_doc(self, doc):
         return [token for token in doc if self.filter(token)]
+
     def fit(self, X, y=None):
         return self
 
@@ -33,3 +26,5 @@ class Filter(TransformerMixin):
     def get_params(self, deep=True):
         return {}
 
+    def get_feature_names_out(self, features_in):
+        return features_in

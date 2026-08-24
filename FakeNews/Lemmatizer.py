@@ -1,10 +1,14 @@
+"""Token-to-string conversion step for the text-processing pipeline."""
 from sklearn.base import TransformerMixin
 import pandas as pd
 
 
 class Lemmatizer(TransformerMixin):
-    def __init__(self):
-        pass
+    """Converts filtered spaCy tokens back into strings for vectorization.
+
+    Multi-word named entities are joined with underscores (``White_House``)
+    so TF-IDF treats them as a single term.
+    """
 
     def fit(self, X, y=None):
         return self
@@ -12,11 +16,10 @@ class Lemmatizer(TransformerMixin):
     def process_token(self, token):
         if token.ent_type_:
             return '_'.join(token.text.split())
-        else:
-            return token.text
+        return token.text
+
     def lemmatize_doc(self, doc):
         return [self.process_token(token) for token in doc]
-
 
     def transform(self, X, y=None):
         print('Lemmatizing...')
